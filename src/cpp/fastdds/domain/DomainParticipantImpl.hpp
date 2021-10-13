@@ -199,7 +199,7 @@ public:
 
     ContentFilteredTopic* create_contentfilteredtopic(
             const std::string& name,
-            const Topic* related_topic,
+            Topic* related_topic,
             const std::string& filter_expression,
             const std::vector<std::string>& expression_parameters);
 

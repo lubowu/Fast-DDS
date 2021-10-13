@@ -584,6 +584,13 @@ bool StatefulReader::processDataFragMsg(
             if (work_change != nullptr && work_change->is_fully_assembled())
             {
                 pWP->received_change_set(work_change->sequenceNumber);
+                if (nullptr != data_filter_)
+                {
+                    if (!data_filter_->is_relevant(*work_change, m_guid))
+                    {
+                        mp_history->remove_change(work_change);
+                    }
+                }
                 NotifyChanges(pWP);
             }
         }
@@ -862,6 +869,13 @@ bool StatefulReader::change_received(
         if (a_change->is_fully_assembled())
         {
             ret = prox->received_change_set(a_change->sequenceNumber);
+            if (nullptr != data_filter_)
+            {
+                if (!data_filter_->is_relevant(*a_change, m_guid))
+                {
+                    mp_history->remove_change(a_change);
+                }
+            }
         }
 
         // WARNING! This method could destroy a_change

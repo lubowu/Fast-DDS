@@ -252,13 +252,16 @@ bool StatelessReader::change_received(
 
             on_data_notify(change->writerGUID, change->sourceTimestamp);
 
-            if (getListener() != nullptr)
+            if ((nullptr == data_filter_) || (data_filter_->is_relevant(*change, m_guid)))
             {
-                // WARNING! This method could destroy the change
-                getListener()->onNewCacheChangeAdded(this, change);
-            }
+                if (getListener() != nullptr)
+                {
+                    // WARNING! This method could destroy the change
+                    getListener()->onNewCacheChangeAdded(this, change);
+                }
 
-            new_notification_cv_.notify_all();
+                new_notification_cv_.notify_all();
+            }
 
             // statistics callback
             on_subscribe_throughput(payload_length);

@@ -116,6 +116,12 @@ public:
         return m_changes.erase(removal);
     }
 
+    virtual bool writer_unmatched(
+           const GUID_t& /*writer_guid*/)
+    {
+        return true;
+    }
+
     HistoryAttributes m_att;
 
 protected:
